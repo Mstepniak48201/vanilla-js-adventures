@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // Listen for zoom resizing.
   window.addEventListener("resize", () => updateDropdownY(dropdown, navBg, getIsVisible)); // Wrap updateDropdownPos() in arrow function to defer calling it.
 
-  // Position dropdown X Position.
+  // Position dropdown in persistent X position.
   updateDropdownX(button, dropdown);
 
   // Toggle dropdown.
@@ -33,6 +33,7 @@ const updateDropdownX = (button, dropdown) => {
   const buttonRect = button.getBoundingClientRect();
   const dropdownWidth = dropdown.offsetHeight;
   const dropdownX = buttonRect.left + (buttonRect.width / 2) - (dropdownWidth / 2);
+  dropdown.style.left = `${dropdownX}px`;
 }
 
 const updateDropdownY = (dropdown, navBg, getIsVisible) => { 
@@ -46,20 +47,15 @@ function toggle({navBg, button, dropdown, getIsVisible, setIsVisible}) {
   const navHeight = navBg.offsetHeight;
   button.addEventListener("click", function() {
     if (!getIsVisible()) {
-      console.log("clicked");
       dropdown.classList.remove("dropdown-hidden");
-      dropdown.style.transform = `translateX(${button, dropdown})`;
       dropdown.style.transform = `translateY(${navHeight}px)`;
       dropdown.classList.add("dropdown-visible");
       setIsVisible(true);
-      console.log(getIsVisible());
     } else {
-      console.log("clicked again");
       dropdown.classList.remove("dropdown-visible");
       dropdown.style.transform = `translateY(-300px)`;
       dropdown.classList.add("dropdown-hidden"); 
       setIsVisible(false); 
-      console.log(getIsVisible());
     }
   });
 }
