@@ -5,31 +5,50 @@ document.addEventListener("DOMContentLoaded", function() {
   const dropdown = document.getElementById("dropdown-container");
   const navBg = document.getElementById("navbar-background");
 
-  // Get and set dropdown visibility
+  // Get and set dropdown visibility.
   let isVisible = false;
   const getIsVisible = () => isVisible; // () => isVisible returns *current value* of isVisible.
   const setIsVisible = (val) => {isVisible = val;} // (val) => Uncaught TypeError: getIsVisible is not a function
 
+  // Destructured Arguments:
+  const toggleArgs = {
+    navBg: navBg,
+    button: button,
+    dropdown: dropdown,
+    getIsVisible: getIsVisible,
+    setIsVisible: setIsVisible,
+  }
+
   // Listen for zoom resizing.
-  window.addEventListener("resize", () => updateDropdownPos(dropdown, navBg, getIsVisible)); // Wrap updateDropdownPos() in arrow function to defer calling it.
+  window.addEventListener("resize", () => updateDropdownY(dropdown, navBg, getIsVisible)); // Wrap updateDropdownPos() in arrow function to defer calling it.
+
+  // Position dropdown X Position.
+  updateDropdownX(button, dropdown);
 
   // Toggle dropdown.
-  toggle(navBg, button, dropdown, getIsVisible, setIsVisible);
+  toggle(toggleArgs);
 });
 
-const updateDropdownPos = (dropdown, navBg, getIsVisible) => { 
+const updateDropdownX = (button, dropdown) => {
+  const buttonRect = button.getBoundingClientRect();
+  const dropdownWidth = dropdown.offsetHeight;
+  const dropdownX = buttonRect.left + (buttonRect.width / 2) - (dropdownWidth / 2);
+}
+
+const updateDropdownY = (dropdown, navBg, getIsVisible) => { 
   const navHeight = navBg.offsetHeight;
   if (getIsVisible()) {
     dropdown.style.transform = `translateY(${navHeight}px)`;
   }
 }
 
-function toggle(navBg, button, dropdown, getIsVisible, setIsVisible) {
+function toggle({navBg, button, dropdown, getIsVisible, setIsVisible}) {
   const navHeight = navBg.offsetHeight;
   button.addEventListener("click", function() {
     if (!getIsVisible()) {
       console.log("clicked");
       dropdown.classList.remove("dropdown-hidden");
+      dropdown.style.transform = `translateX(${button, dropdown})`;
       dropdown.style.transform = `translateY(${navHeight}px)`;
       dropdown.classList.add("dropdown-visible");
       setIsVisible(true);
