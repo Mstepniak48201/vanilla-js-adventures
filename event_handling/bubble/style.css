@@ -1,0 +1,33 @@
+/* Import fonts.css */
+@import url("fonts.css");
+
+/* Set rule for all browsers to use monospace font */
+* {
+  font-family: monospace;
+  font-size: 1.5rem;
+}
+
+/* Set override rule for browsers that support @font-face and custom fonts*/
+body {
+  font-family: "Ubuntu Mono", monospace;
+  font-size: 1.5rem;
+}
+
+#formStyle {
+  color: white;
+  background-color: red;
+  margin-left: 15px;
+  padding: 10px;
+}
+
+#divStyle {
+  color: white;
+  background-color: green;
+  padding: 10px;
+}
+
+#pStyle {
+  color: white;
+  background-color: blue;
+  padding: 10px;
+}
