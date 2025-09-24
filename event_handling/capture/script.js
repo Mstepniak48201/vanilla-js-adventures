@@ -19,6 +19,13 @@ document.addEventListener("DOMContentLoaded", function() {
     setIsVisible: setIsVisible,
   }
 
+  const captureArgs = {
+    getIsVisible: getIsVisible,
+    setIsVisible: setIsVisible,
+    button: button,
+    dropdown: dropdown,
+  }
+
   // Listen for zoom resizing.
   window.addEventListener("resize", () => updateDropdownY(dropdown, navBg, getIsVisible)); // Wrap updateDropdownPos() in arrow function to defer calling it.
 
@@ -27,6 +34,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Toggle dropdown.
   toggle(toggleArgs);
+
+  // Close dropdown if clicked anywhere outside of dropdown or button.
+  // Listener scoped to document as opposed to entire browser window.
+  document.addEventListener("click", (event) => capture(event, captureArgs), true);
+
 });
 
 const updateDropdownX = (button, dropdown) => {
@@ -43,7 +55,7 @@ const updateDropdownY = (dropdown, navBg, getIsVisible) => {
   }
 }
 
-function toggle({navBg, button, dropdown, getIsVisible, setIsVisible}) {
+const toggle = ({navBg, button, dropdown, getIsVisible, setIsVisible}) => {
   const navHeight = navBg.offsetHeight;
   button.addEventListener("click", function() {
     if (!getIsVisible()) {
@@ -60,82 +72,41 @@ function toggle({navBg, button, dropdown, getIsVisible, setIsVisible}) {
   });
 }
 
-/*
-document.addEventListener("DOMContentLoaded", function() {
-  const button = document.getElementById("event-button");
-  const dropdown = document.getElementById("dropdown-container");
-  const navBg = document.getElementById("navbar-background");
-  let isVisible = false;
-  console.log(isVisible);
-  console.log(navBg);
-  // const navHeight = document.getElementById("navbar-background").offsetHeight;
-  
-  // Parameters
-  // () => isVisible returns *current value* of isVisible.
-  // (val) => {isVisible = val;} sets isVisible to val.
-  const getIsVisible = () => isVisible;
-  const setIsVisible = (val) => {isVisible = val;}
+const capture = (event, {getIsVisible, setIsVisible, button, dropdown}) => {
+  if (!getIsVisible()) return; // Check if dropdown is open, if not, return.
 
-  // window.addEventListener("resize", updateDropdownPos(dropdown, navBg)); 
-  toggle(navBg, button, dropdown, getIsVisible, setIsVisible);
-});
+  const insideButton = button.contains(event.target);
+  const insideDropdown = dropdown.contains(event.target);
 
-function updateDropdownPos(dropdown, navBg, getIsVisible) {
-  const navHeight = navBg.offsetHeight;
-  if (getIsVisible()) {
-    dropdown.style.transform = `translateY(${navHeight}px)`;
-  }
+  if (!insideButton && !insideDropdown) {
+    dropdown.classList.remove("dropdown-visible");
+    dropdown.style.transform = `translateY(-300px)`;
+    dropdown.classList.add("dropdown-hidden"); 
+    setIsVisible(false);  
+  } 
 }
 
-function toggle(navBg, button, dropdown, getIsVisible, setIsVisible) {
-  const navHeight = navBg.offsetHeight;
-  button.addEventListener("click", function() {
-    if (!getIsVisible()) {
-      console.log("clicked");
-      dropdown.classList.remove("dropdown-hidden");
-      dropdown.style.transform = `translateY(${navHeight}px)`;
-      dropdown.classList.add("dropdown-visible");
-      setIsVisible(true);
-      console.log(getIsVisible());
-    } else {
-      console.log("clicked again");
-      dropdown.classList.remove("dropdown-visible");
-      dropdown.style.transform = `translateY(-300px)`;
-      dropdown.classList.add("dropdown-hidden"); 
-      setIsVisible(false); 
-      console.log(getIsVisible());
-    }
-  });
-}
-*/
 /*
-psuedo code:
-document.eventListener DOMcontentLoaded
-  const button = get button;
-  const dropdown = get dropdown;
-  let isVisible = false;
+psuedo code for capture()
 
-  const getIsVisible = () => isVisible;
-  const setIsVisible = (val) => isVisible = val;
+const capture = (event, {getIsVisible, button, dropdown})
+  Check if open, if getIsVisible, return
 
-  function updateDropdownPos()
-    const navHeight = get navbar.offsetHeight;
-    dropdown.style.transform = translate&(navHeight);
+  insideButton = button.contains(event.target)
+  insideDropdown = dropdown.contains(event.target)
 
-  updateDropDownPos();
-  window.eventListener resize, updateDropdownPos()
-
-  toggle(button, dropdown, getIsVisible, setIsVisible);
-
-function toggle(button, dropdown, getIsVisible, setIsVisible)
-  button.addEventListener click
-    if !getIsVisible
-      dropdown remove class "dropdown-hidden";
-      dropdown.style.transform = translateY(navHeight);
-      dropdown add class "dropdown-visible";
-      setIsVisible(true);
-    else
-      dropdown remove class "dropdown-visible";
-      dropdown add class "dropdown-hidden";
-      setIsVisible(false);
+  if !insideButton && !insideDropdown
+    dropdown.classList.remove("dropdown-visible");
+    dropdown.style.transform = `translateY(-300px)`;
+    dropdown.classList.add("dropdown-hidden"); 
+    setIsVisible(false); 
+    
+    
 */
+
+
+
+
+
+
+
