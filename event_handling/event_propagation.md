@@ -56,23 +56,20 @@ Write a site in HTML, CSS and JavaScript that:
 
 [ ] The onclick event should bubble up from the child elements. To test this, there should be a 1 second delay when bubbling. So if the user clicks "P," the P element should change from Blue to Yellow, and then it should take 1 second before DIV changes to Magenta, and 1 more second after that until FORM changes to Cyan.
 
-2. Understanding Capturing
+2. Capturing  
+- Make a site in HTML, CSS, and JavaScript that:
 
-- Criteria
-1. Only use vanilla html, css, javascript. No external libraries, frameworks, or languages.
-2. No experimental features. Cross-browser support is a priority.
-3. Avoid using html select. Make it pretty.
+[ ] Contains a card  
+[ ] Within the card, contains a button.
+
+- When a user clicks the button, the event should be read by the document first, then handled by the card (console.log("event handled by card") and *then* handled by the button (console.log("event handled by button"))
 
 
-Write a site in HTML, CSS and JavaScript that:
 
-[ ] Contains three empty boxes, centered on the page
 
-[ ] Contains a dropdown menu that contains three items: Red, Yellow, and Blue.
-  [ ] Each item should have an onclick attribute that, when clicked, changes an attached box to Red, Yellow, or Blue.
 
-[ ] Using capture set to true in an event listener, the dropdown/modal logic should run before any of the other click handlers. If the user clicks outside of the dropdown/modal, the dropdown/modal should close.
-  
+
+ 
  
 
 

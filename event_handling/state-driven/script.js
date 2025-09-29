@@ -1,6 +1,6 @@
 // Add JavaScript.
 document.addEventListener("DOMContentLoaded", function() {
-  // Get references to html elements.
+  // Get references to HTML elements.
   const button = document.getElementById("event-button");
   const dropdown = document.getElementById("dropdown-container");
   const navBg = document.getElementById("navbar-background");
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
     setIsVisible: setIsVisible,
   }
 
-  const captureArgs = {
+  const closeArgs = {
     getIsVisible: getIsVisible,
     setIsVisible: setIsVisible,
     button: button,
@@ -27,7 +27,8 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // Listen for zoom resizing.
-  window.addEventListener("resize", () => updateDropdownY(dropdown, navBg, getIsVisible)); // Wrap updateDropdownPos() in arrow function to defer calling it.
+  window.addEventListener("resize", () => updateDropdownX(button, dropdown));
+  window.addEventListener("resize", () => updateDropdownY(dropdown, navBg, getIsVisible)); // Wrap functions in arrow function to defer calling it.
 
   // Position dropdown in persistent X position.
   updateDropdownX(button, dropdown);
@@ -36,14 +37,13 @@ document.addEventListener("DOMContentLoaded", function() {
   toggle(toggleArgs);
 
   // Close dropdown if clicked anywhere outside of dropdown or button.
-  // Listener scoped to document as opposed to entire browser window.
-  document.addEventListener("click", (event) => capture(event, captureArgs), true);
 
+  document.addEventListener("click", (event) => close(event, closeArgs));
 });
 
 const updateDropdownX = (button, dropdown) => {
   const buttonRect = button.getBoundingClientRect();
-  const dropdownWidth = dropdown.offsetHeight;
+  const dropdownWidth = dropdown.offsetWidth;
   const dropdownX = buttonRect.left + (buttonRect.width / 2) - (dropdownWidth / 2);
   dropdown.style.left = `${dropdownX}px`;
 }
@@ -72,7 +72,7 @@ const toggle = ({navBg, button, dropdown, getIsVisible, setIsVisible}) => {
   });
 }
 
-const capture = (event, {getIsVisible, setIsVisible, button, dropdown}) => {
+const close = (event, {getIsVisible, setIsVisible, button, dropdown}) => {
   if (!getIsVisible()) return; // Check if dropdown is open, if not, return.
 
   const insideButton = button.contains(event.target);
@@ -87,9 +87,9 @@ const capture = (event, {getIsVisible, setIsVisible, button, dropdown}) => {
 }
 
 /*
-psuedo code for capture()
+psuedo code for close()
 
-const capture = (event, {getIsVisible, button, dropdown})
+const close = (event, {getIsVisible, button, dropdown})
   Check if open, if getIsVisible, return
 
   insideButton = button.contains(event.target)
